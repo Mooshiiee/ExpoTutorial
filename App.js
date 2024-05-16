@@ -3,6 +3,9 @@ import { StyleSheet, View } from 'react-native';
 
 import ImageViewer from './components/ImageViewer';
 import Button from './components/Button';
+import CircleButton from './components/CircleButton';
+import IconButton from './components/IconButton';
+
 
 import * as ImagePicker from 'expo-image-picker'
 
@@ -37,6 +40,18 @@ export default function App() {
     }
   };
 
+  const onReset = () => {
+    setShowAppOptions(false);
+  };
+
+  const onAddSticker = () => {
+    // we will implement this later
+  };
+
+  const onSaveImageAsync = async () => {
+    // we will implement this later
+  };
+
 
   return (
     <View style={styles.container}>
@@ -46,12 +61,21 @@ export default function App() {
           selectedImage={selectedImage} 
         />
       </View>
-      <View style={styles.footerContainer}>
-        <Button theme="primary" label="Choose a Photo" onPress={pickImageAsync}/>
-        <Button label="Use this Photo" onPress={() => setShowAppOptions(true)} />
-        //Using setShowAppOptions inside of an arrow function makes it act like an event handler.
-        //This prevents setShowAppOptions from 
-      </View>
+      {showAppOptions ? (
+       <View style={styles.optionsContainer}>
+         <View style={styles.optionsRow}>
+           <IconButton icon="refresh" label="Reset" onPress={onReset} />
+           <CircleButton onPress={onAddSticker} />
+           <IconButton icon="save-alt" label="Save" onPress={onSaveImageAsync} />
+         </View>
+       </View>
+      ) : (
+       <View style={styles.footerContainer}>
+         <Button theme="primary" label="Choose a Photo" onPress={pickImageAsync}/>
+         <Button label="Use this Photo" onPress={() => setShowAppOptions(true)} />
+       </View>
+      )}
+      
       <StatusBar style="auto" />
     </View>
   );
@@ -75,5 +99,13 @@ const styles = StyleSheet.create({
   footerContainer: {
     flex: 1/3,
     alignItems: 'center',
+  },
+  optionsContainer: {
+    position: 'absolute',
+    bottom: 80,
+  },
+  optionsRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
